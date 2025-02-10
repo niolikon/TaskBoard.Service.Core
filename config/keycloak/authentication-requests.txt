@@ -1,0 +1,35 @@
+curl -X POST "http://localhost:8081/realms/TodoRealm/protocol/openid-connect/token" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "client_id=my-client" \
+     -d "username=testuser" \
+     -d "password=testuser2025password54f3!" \
+     -d "grant_type=password"
+
+curl -X POST "http://todolist-keycloak:8080/realms/TodoRealm/protocol/openid-connect/token" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "client_id=my-client" \
+     -d "username=testuser" \
+     -d "password=testuser2025password54f3!" \
+     -d "grant_type=password"
+
+curl -X POST "http://localhost:8081/realms/TodoRealm/protocol/openid-connect/token" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "client_id=my-client" \
+     -d "refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAi..." \
+     -d "grant_type=refresh_token"
+
+curl -X POST "http://todolist-keycloak:8080/realms/TodoRealm/protocol/openid-connect/token" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "client_id=my-client" \
+     -d "refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAi..." \
+     -d "grant_type=refresh_token"
+
+curl -X POST "http://localhost:8081/realms/TodoRealm/protocol/openid-connect/logout" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "client_id=my-client" \
+     -d "refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAi..."
+
+curl -X POST "http://todolist-keycloak:8080/realms/TodoRealm/protocol/openid-connect/logout" \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "client_id=my-client" \
+     -d "refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAi..."

@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\simon\.nuget\packages\taskboard.framework.core\1.0.0\contentFiles\any\net8.0\testhost.dll" />
+    <Content Remove="C:\Users\simon\.nuget\packages\taskboard.framework.core\1.0.0\contentFiles\any\net8.0\testhost.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TaskBoard.Framework.Core" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,58 @@
+{
+  "realm": "TodoRealm",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "my-client",
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["http://localhost:8081/*"],
+      "webOrigins": ["*"],
+      "protocol": "openid-connect"
+    }
+  ],
+  "users": [
+    {
+      "username": "testuser",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Simple",
+      "lastName": "User",
+      "email": "user@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "testuser2025password54f3!"
+        }
+      ],
+      "realmRoles": ["USER"]
+    },
+    {
+      "username": "adminuser",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "User",
+      "email": "admin@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "adminuser2025password54f3!"
+        }
+      ],
+      "realmRoles": ["ADMIN"]
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "USER",
+        "description": "todo-basic-users"
+      },
+      {
+        "name": "ADMIN",
+        "description": "todo-admin-users"
+      }
+    ]
+  }
+}

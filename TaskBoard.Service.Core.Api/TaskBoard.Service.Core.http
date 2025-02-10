@@ -1,0 +1,6 @@
+@TaskBoard.Service.Core.Core_HostAddress = http://localhost:5103
+
+GET {{TaskBoard.Service.Core.Core_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

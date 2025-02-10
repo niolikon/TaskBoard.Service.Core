@@ -1,0 +1,79 @@
+version: '3.8'
+
+networks:
+  backend-network:
+    driver: bridge
+
+services:
+  taskboard-keycloak-db:
+    image: postgres:15
+    container_name: taskboard-keycloak-db
+    restart: always
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    volumes:
+      - keycloak-storage:/var/lib/postgresql/data
+    networks:
+      - backend-network
+
+  taskboard-keycloak:
+    image: quay.io/keycloak/keycloak:22.0
+    container_name: taskboard-keycloak
+    restart: always
+    depends_on:
+      - taskboard-keycloak-db
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://taskboard-keycloak-db/keycloak
+      KC_HOSTNAME: taskboard-keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+    command: ["start-dev", "--import-realm"]
+    volumes:
+      - ./config/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    networks:
+      - backend-network
+    ports:
+      - "8081:8080"
+
+  taskboard-service-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: taskboard-service-db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_DB_NAME: ${DB_NAME}
+      SA_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - service-storage:/var/opt/mssql
+    networks:
+      - backend-network
+
+  taskboard-service:
+    image: taskboard-service-core:latest
+    container_name: taskboard-service
+    restart: always
+    depends_on:
+      - taskboard-service-db
+      - taskboard-keycloak
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Server=taskboard-service-db;Database=${DB_NAME};User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=true;MultipleActiveResultSets=true"
+      Keycloak__RealmUri: "http://taskboard-keycloak:8080/realms/TodoRealm"
+      Keycloak__ClientId: "my-client"
+    networks:
+      - backend-network
+    ports:
+      - "8080:8080"
+
+volumes:
+  service-storage:
+  keycloak-storage:
